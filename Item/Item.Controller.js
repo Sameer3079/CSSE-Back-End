@@ -29,6 +29,7 @@ var ItemController = function(){
                         reject({"status":"404","message":"Err "+err});
                     });
                 }
+                
                 else{
                     resolve({"status":"200","message":"Already Exists "+Data.itemName+" item"});
                 }
