@@ -87,6 +87,9 @@ var OrderController = function(){
     }
 
 
+    /**
+     * Update a particular order finding by id
+     */
     this.updateOrder = (id , Data) => {
         return new Promise((resolve,reject) => {
 
@@ -109,6 +112,30 @@ var OrderController = function(){
             .catch((err) => {
                 reject({"status":"404","message":"Err "+err});
             })
+        })
+    }
+
+
+    /**
+     * 
+     * @param {*} supplierName 
+     */
+    this. getOrderBySupplier = (supplierName) => {
+
+        return new Promise((resolve,reject) => {
+            OrderShema.find({supplierName : supplierName})
+            .then((data) => {
+                
+                if(data.length === 1){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    resolve({"status":"205","message":"Can not find order"})
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
         })
     }
 
