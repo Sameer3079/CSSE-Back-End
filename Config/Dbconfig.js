@@ -5,7 +5,7 @@ Mongoose.connect('mongodb://localhost:27017/CSSE' , { useNewUrlParser: true } , 
         console.log(err);
         process.exit(-1);
     }
-    console.log("connected to the DB");
+    console.log("Connected to the DB");
 })
 
 /**
