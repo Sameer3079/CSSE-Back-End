@@ -24,6 +24,10 @@ const OrderShema = new Schema({
         type : Boolean,
         required : true
     },
+    supplierName : {
+        type : String,
+        required : true
+    },
     onHold : {
         type : Boolean,
         required : true
