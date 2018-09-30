@@ -1,4 +1,5 @@
 const Mongoose          = require("mongoose");
+const Float             = require("mongoose-float");
 const Schema            = Mongoose.Schema;
 
 const ItemSchema = new Schema({
@@ -11,7 +12,7 @@ const ItemSchema = new Schema({
         required : true
     },
     price : {
-        type : Number,
+        type : Float,
         required : true
     },
     deliveryInformation : {
