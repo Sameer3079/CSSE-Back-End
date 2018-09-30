@@ -77,7 +77,7 @@ let employeeController = function () {
                     data.managedSiteId = req.body.managedSiteId
                     data.role = req.body.role
                     data.save().then(data => {
-                        resolve({ status: 201, message: 'Employee has been updated' })
+                        resolve({ status: 200, message: 'Employee has been updated' })
                     }).catch(error => {
                         console.log(error)
                         reject({ status: 500, message: 'Internal Server Error' })
@@ -94,10 +94,18 @@ let employeeController = function () {
 
     this.removeEmployee = (empId) => {
         return new Promise((resolve, reject) => {
-            employeeModel.deleteOne({ empId: empId }).then(data => {
-                resolve({ status: 204, message: 'Employee has been removed' })
+            employeeModel.findOne({ empId: empId }).then(data => {
+                if (data !== null) {
+                    employeeModel.deleteOne({ empId: empId }).then(data => {
+                        resolve({ status: 200, message: 'Employee has been removed' })
+                    }).catch(error => {
+                        reject({ status: 500, message: 'Error removing employee' })
+                    })
+                } else {
+                    reject({ status: 400, message: 'Employee not found' })
+                }
             }).catch(error => {
-                reject({ status: 500, message: 'Error removing employee' })
+                reject({ status: 500, message: 'Error occured when searching for employee' })
             })
         })
     }
