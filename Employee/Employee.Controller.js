@@ -27,13 +27,15 @@ let employeeController = function () {
         })
     }
 
-    this.addEmployee = (reqBody) => {
+    this.addEmployee = (req) => {
         return new Promise((reject, resolve) => {
+            let reqBody = req.body
+            console.log(reqBody)
             if (reqBody.type !== 'Authorized Employee' && reqBody.type !== 'Site Manager'
                 && reqBody.type !== 'Senior Member of Staff' && reqBody.type !== 'Management') {
                 reject({ status: 400, message: 'Employee Type is NOT Valid\nIt can only be one of the following: Authorized Employee, Site Manager, Senior Member of Staff, or Management' })
             } else {
-                employeeModel.findOne({ empId: empId }).find().then(data => {
+                employeeModel.findOne({ empId: reqBody.empId }).then(data => {
                     if (data === null) {
                         let employee = new employeeModel({
                             empId: reqBody.empId,
@@ -53,7 +55,7 @@ let employeeController = function () {
                         })
                     }
                     else {
-                        reject({ status: 999, message: 'Employee ID is already in use' }) // TODO:
+                        reject({ status: 400, message: 'Employee ID is already in use' })
                     }
                 }).catch(error => {
                     reject({ status: 500, message: 'Internal Server Error' })
