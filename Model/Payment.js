@@ -18,7 +18,13 @@ const PaymentSchema = new Schema({
     amount:{
         type:Number,
         required:true
+    },
+    status:{
+        type:Boolean,
+        required:true
     }
+    
+
 
 });
 
