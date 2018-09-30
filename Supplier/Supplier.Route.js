@@ -26,4 +26,12 @@ router.post('/', (req, res) => {
     })
 })
 
+router.put('/', (req, res) => {
+    supplierController.updateSupplier(req).then(data => {
+        res.status(data.status).send({ message: data.message })
+    }).catch(error => {
+        res.status(error.status).send({ message: error.message })
+    })
+})
+
 module.exports = router
