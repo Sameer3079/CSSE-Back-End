@@ -43,14 +43,14 @@ let employeeController = function () {
                             lastName: reqBody.lastName,
                             address: reqBody.address,
                             email: reqBody.email,
-                            phone: reqBody.phone,
+                            contactNo: reqBody.contactNo,
                             managedSiteId: reqBody.managedSiteId,
                             role: reqBody.role
                         })
                         employee.save().then(data => {
                             resolve({ status: 201, message: 'Employee has been added' })
                         }).catch(error => {
-                            reject({ status: 500, message: 'Internal Server Error' })
+                            reject({ status: 400, message: error })
                         })
                     }
                     else {
@@ -73,7 +73,7 @@ let employeeController = function () {
                     data.lastName = req.body.lastName
                     data.address = req.body.address
                     data.email = req.body.email
-                    data.phone = req.body.phone
+                    data.contactNo = req.body.contactNo
                     data.managedSiteId = req.body.managedSiteId
                     data.role = req.body.role
                     data.save().then(data => {

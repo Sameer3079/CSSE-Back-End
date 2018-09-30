@@ -8,7 +8,7 @@ let employee = new schema({
     lastName: { required: true, type: String },
     address: { required: true, type: String },
     email: { required: true, type: String },
-    phone: { required: true, type: String },
+    contactNo: { required: true, type: String },
     managedSiteId: { required: false, type: String }, // Site Manager
     role: { required: false, type: String } // Senior Member of Staff
 })
