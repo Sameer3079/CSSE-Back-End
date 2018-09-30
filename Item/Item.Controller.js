@@ -39,6 +39,20 @@ var ItemController = function(){
             }) 
         })
     }
+
+
+
+    this.getAllItem = () => {
+        return new Promise((resolve,reject) => {
+            ItemSchemma.find().exec()
+            .then((data) => {
+                resolve({"status":"200","message":data});
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err" +err});
+            })
+        })
+    }
 }
 
 module.exports = new ItemController();
