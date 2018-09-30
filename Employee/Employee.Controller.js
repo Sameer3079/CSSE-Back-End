@@ -91,6 +91,16 @@ let employeeController = function () {
             })
         })
     }
+
+    this.removeEmployee = (empId) => {
+        return new Promise((resolve, reject) => {
+            employeeModel.deleteOne({ empId: empId }).then(data => {
+                resolve({ status: 204, message: 'Employee has been removed' })
+            }).catch(error => {
+                reject({ status: 500, message: 'Error removing employee' })
+            })
+        })
+    }
 }
 
 module.exports = new employeeController()
