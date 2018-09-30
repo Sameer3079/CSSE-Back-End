@@ -69,13 +69,31 @@ let supplierController = function () {
                     data.items = req.body.items
                     data.available = req.body.available
                     data.save().then(data => {
-                        resolve({ status: 200, message: 'Supplier has been updated'})
+                        resolve({ status: 200, message: 'Supplier has been updated' })
                     }).catch(error => {
                         reject({ status: 500, message: 'Error occured when updating supplier' })
                     })
                 }
                 else {
                     reject({ status: 400, message: 'Invalid Supplier ID' })
+                }
+            }).catch(error => {
+                reject({ status: 500, message: 'Error occured when searching for supplier' })
+            })
+        })
+    }
+
+    this.removeSupplier = (supplierId) => {
+        return new Promise((resolve, reject) => {
+            supplierModel.findOne({ supplierId: supplierId }).then(data => {
+                if (data !== null) {
+                    supplierModel.deleteOne({ supplierId: supplierId }).then(data => {
+                        resolve({ status: 200, message: 'Supplier has been removed' })
+                    }).catch(error => {
+                        reject({ status: 500, message: 'Error occured when removing supplier' })
+                    })
+                } else {
+                    reject({status: 400, message: 'Supplier does not exist'})
                 }
             }).catch(error => {
                 reject({ status: 500, message: 'Error occured when searching for supplier' })
