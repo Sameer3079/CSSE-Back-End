@@ -13,6 +13,6 @@ let employee = new schema({
     role: { required: false, type: String } // Senior Member of Staff
 })
 
-mongoose.model('Employee', employee)
+mongoose.model('Employee', employee, 'employees')
 
 module.exports = mongoose
