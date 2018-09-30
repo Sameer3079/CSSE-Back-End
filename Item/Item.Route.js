@@ -2,7 +2,12 @@ const Express           = require("express");
 const Route             = Express.Router();
 const ItemController    = require('./Item.Controller');
 
-
+    /**
+     * POST 
+     * create new item and it return status code as 201
+     * Created By Sachith Tharaka
+     * 2018/09/30
+     */
 Route.post('/' , (req,res) => {
 
     ItemController.addItem(req.body)

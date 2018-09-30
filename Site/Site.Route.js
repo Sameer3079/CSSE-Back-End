@@ -19,6 +19,14 @@ Route.post('/' , (req, res)  => {
     });
 });
 
+
+
+    /**
+     * GET 
+     * Return status code as 200
+     * Created By Sachith Tharaka
+     * 2018/09/30
+     */
 Route.get('/' , (req,res) => {
     SiteController.getAllSites()
     .then((data) => {
@@ -26,6 +34,23 @@ Route.get('/' , (req,res) => {
     })
     .catch((err) => {
         res.status(err.status).send({"message":err.message});
+    });
+})
+
+
+    /**
+     * GET. 
+     * Return status code as 200 if success.
+     * Created By Sachith Tharaka.
+     * 2018/09/30.
+     */
+Route.get('/:name' , (req,res) => {
+    SiteController.getItemOfSite(req.params.name)
+    .then((data) => {
+        res.status(data.status).send(data.message);
+    })
+    .catch((err) => {
+        res.status(err.status).send(err.message);
     });
 })
 
