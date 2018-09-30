@@ -20,4 +20,15 @@ Route.post('/' , (req,res) => {
 
 });
 
+
+Route.get('/' , (req,res) => {
+    ItemController.getAllItem()
+    .then((data) => {
+        res.status(data.status).send(data);
+    })
+    .catch((err) => {
+        res.status(err.status).send(err.message);
+    });
+})
+
 module.exports = Route;
