@@ -9,7 +9,8 @@ let supplierSchema = new schema({
     email: { required: true, type: String },
     contactNo: { required: true, type: String },
     items: [{ required: false, type: String }],
-    available: { required: true, type: Boolean }
+    available: { required: true, type: Boolean },
+    blacklisted: { required: true, type: Boolean }
 })
 
 mongoose.model('Supplier', supplierSchema, 'suppliers')

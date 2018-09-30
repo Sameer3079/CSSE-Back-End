@@ -39,7 +39,8 @@ let supplierController = function () {
                         email: req.body.address,
                         contactNo: req.body.contactNo,
                         items: req.body.items,
-                        available: req.body.available
+                        available: req.body.available,
+                        blacklisted: req.body.blacklisted
                     })
                     supplier.save().then(data => {
                         resolve({ status: 201, message: 'Supplier has been added' })
@@ -68,6 +69,7 @@ let supplierController = function () {
                     data.contactNo = req.body.contactNo
                     data.items = req.body.items
                     data.available = req.body.available
+                    data.blacklisted = req.body.blacklisted
                     data.save().then(data => {
                         resolve({ status: 200, message: 'Supplier has been updated' })
                     }).catch(error => {
