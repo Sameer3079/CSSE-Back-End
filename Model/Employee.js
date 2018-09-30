@@ -1,39 +1,18 @@
 const mongoose = require('mongoose')
 const schema = mongoose.Schema
 
-let authorizedEmployee = new schema({
-    id: String,
-    type: String,
-    firstName: String,
-    lastName: String,
-    address: String,
-    email: String,
-    phone: String
+let employee = new schema({
+    empId: { required: true, type: String },
+    type: { required: true, type: String }, // Authorized Employee/Site Manager/Senior Member of Staff/Management
+    firstName: { required: true, type: String },
+    lastName: { required: true, type: String },
+    address: { required: true, type: String },
+    email: { required: true, type: String },
+    phone: { required: true, type: String },
+    managedSiteId: { required: false, type: String }, // Site Manager
+    role: { required: false, type: String } // Senior Member of Staff
 })
 
-let supplier = new schema({
-    id: String,
-    name: String,
-    bankAcc: String,
-    address: String,
-    email: String,
-    phone: String,
-    items: [{ id: String, name: String, price: Number}]
-})
-
-let siteManager = new schema({
-    id: String,
-    type: String,
-    firstName: String,
-    lastName: String,
-    address: String,
-    email: String,
-    phone: String,
-    managedSiteId: Number
-})
-
-mongoose.model('AuthorizedEmployee', authorizedEmployee)
-mongoose.model('Supplier', supplier)
-mongoose.model('SiteManager', siteManager)
+mongoose.model('Employee', employee)
 
 module.exports = mongoose
