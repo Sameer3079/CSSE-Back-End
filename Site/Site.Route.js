@@ -15,6 +15,7 @@ Route.post('/' , (req, res)  => {
         res.status(data.status).send({"message":data.message});
     })
     .catch((err) => {
+        console.log(err);
         res.status(err.status).send({"message":data.message});
     });
 });
