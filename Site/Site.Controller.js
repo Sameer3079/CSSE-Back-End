@@ -9,21 +9,21 @@ const SiteConroller = function(){
      */
     this.addSite = (Data) => {
         return new Promise((resolve,reject) => {
-
+            //console.log(Data.managerName);
             /**
              * Check site name already existing.
              */
             SiteSchema.find({siteName : Data.siteName}).exec()
             .then((data) => {
-    
-                if(data.length === 0 ){
+                if(data.length === 0){
     
                     var site = new SiteSchema({
                         siteName : Data.siteName,
                         address : Data.address,
                         items : Data.items,
                         storageCapacity : Data.storageCapacity,
-                        currentCapacity : Data.currentCapacity
+                        currentCapacity : Data.currentCapacity,
+                        managerName : Data.managerName
                     });
     
                     site.save()
