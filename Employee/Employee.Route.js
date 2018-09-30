@@ -20,7 +20,15 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
     employeeController.addEmployee(req).then(data => {
-        res.status(201).send({ message: data.message })
+        res.status(data.status).send({ message: data.message })
+    }).catch(error => {
+        res.status(error.status).send({ message: error.message })
+    })
+})
+
+router.put('/', (req, res) => {
+    employeeController.updateEmployee(req).then(data => {
+        res.status(data.status).send({ message: data.message })
     }).catch(error => {
         res.status(error.status).send({ message: error.message })
     })
