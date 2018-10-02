@@ -7,10 +7,13 @@ const ItemRoute         = require("./Item/Item.Route");
 const employeeRoute = require('./Employee/Employee.Route')
 const supplierRoute = require('./Supplier/Supplier.Route')
 const businessPolicyRoute = require('./BusinessPolicy/BusinessPolicy.Route')
+const siteRoute = require('./Site/Site.Route')
 
 Routes.use('/payments' , PaymentRoute);
 Routes.use('/users' , UserRoute);
 Routes.use('/item' , ItemRoute);
+
+Routes.use('/site' , siteRoute);
 
 Routes.use('/employees', employeeRoute)
 Routes.use('/suppliers', supplierRoute)
