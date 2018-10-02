@@ -77,7 +77,7 @@ let employeeController = function () {
                     data.managedSiteId = req.body.managedSiteId
                     data.role = req.body.role
                     data.save().then(data => {
-                        resolve({ status: 200, message: 'Employee has been updated' })
+                        resolve({ status: 200, message: 'Employee has been updated', updatedEmployee: data })
                     }).catch(error => {
                         console.log(error)
                         reject({ status: 500, message: 'Internal Server Error' })
