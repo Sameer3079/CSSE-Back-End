@@ -36,7 +36,7 @@ let supplierController = function () {
                         name: req.body.name,
                         bankAccount: req.body.bankAccount,
                         address: req.body.address,
-                        email: req.body.address,
+                        email: req.body.email,
                         contactNo: req.body.contactNo,
                         items: req.body.items,
                         available: req.body.available,
@@ -65,13 +65,13 @@ let supplierController = function () {
                     data.name = req.body.name
                     data.bankAccount = req.body.bankAccount
                     data.address = req.body.address
-                    data.email = req.body.address
+                    data.email = req.body.email
                     data.contactNo = req.body.contactNo
                     data.items = req.body.items
                     data.available = req.body.available
                     data.blacklisted = req.body.blacklisted
                     data.save().then(data => {
-                        resolve({ status: 200, message: 'Supplier has been updated' })
+                        resolve({ status: 200, message: 'Supplier has been updated', updatedSupplier: data })
                     }).catch(error => {
                         reject({ status: 500, message: 'Error occured when updating supplier' })
                     })
@@ -95,7 +95,7 @@ let supplierController = function () {
                         reject({ status: 500, message: 'Error occured when removing supplier' })
                     })
                 } else {
-                    reject({status: 400, message: 'Supplier does not exist'})
+                    reject({ status: 400, message: 'Supplier does not exist' })
                 }
             }).catch(error => {
                 reject({ status: 500, message: 'Error occured when searching for supplier' })
