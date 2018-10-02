@@ -4,7 +4,7 @@
   "description": "csse backend api",
   "main": "app.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit",
+    "test": "node node_modules/mocha/bin/mocha ./Tests --exit",
     "start": "node app.js"
   },
   "author": "team5S",
