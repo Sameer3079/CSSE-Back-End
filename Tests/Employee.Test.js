@@ -32,18 +32,17 @@ describe('Employees', () => {
     let invalidType = 'sjkldghklsdfj'
     let invalidFirstName = '4563456bjhkjbh'
     let invalidLastName = '3456b345jh7g4357jh347h'
-    let invalidAddress = '' // not sure whether there are any invalid addresses
-    let invalidEmail = '' // not sure whether
-    let invalidContactNo = ''
+    let invalidEmail = 'bkjhg2345kjg236hkjg' // not sure whether
+    let invalidContactNo = '81230hgjkfdgkj'
 
     before((done) => {
         server = require('../app')
-        EmployeeModel.deleteMany({}, (error) => {
+        EmployeeModel.deleteMany({}, error => {
             done()
         })
     });
 
-    it('GET-ALL\tNumber of employees should be zero', (done) => {
+    it('GET-ALL\tNumber of employees should be zero', done => {
         chai.request(server).get('/employees')
             .end((error, res) => {
                 res.should.have.status(200)
@@ -53,7 +52,7 @@ describe('Employees', () => {
             })
     })
 
-    it('POST\tAdding a new employee', (done) => {
+    it('POST\tAdding a new employee', done => {
         chai.request(server).post('/employees')
             .set('content-type', 'application/json')
             .send(employee)
@@ -64,7 +63,7 @@ describe('Employees', () => {
             })
     })
 
-    it('GET-ALL\tNumber of employees should be exactly one', (done) => {
+    it('GET-ALL\tNumber of employees should be exactly one', done => {
         chai.request(server).get('/employees')
             .end((error, res) => {
                 res.should.have.status(200)
@@ -74,7 +73,7 @@ describe('Employees', () => {
             })
     })
 
-    it('GET-ONE\tGetting one employee', (done) => {
+    it('GET-ONE\tGetting one employee', done => {
         chai.request(server).get('/employees/' + employee.empId)
             .end((error, res) => {
                 res.should.have.status(200)
@@ -91,7 +90,7 @@ describe('Employees', () => {
     })
 
 
-    it('PUT\tUpdating an employee', (done) => {
+    it('PUT\tUpdating an employee', done => {
         chai.request(server).put('/employees')
             .set('content-type', 'application/json')
             .send(updatedEmployee)
@@ -108,11 +107,164 @@ describe('Employees', () => {
             })
     })
 
-    it('DELETE\tDeleting an employee', (done) => {
+    it('DELETE\tDeleting an employee', done => {
         chai.request(server).del('/employees/' + employee.empId)
             .end((error, res) => {
                 res.should.have.status(200)
                 res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of employee with invalid employee type', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.type = invalidType
+        chai.request(server).post('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of employee with invalid employee firstName', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.firstName = invalidFirstName
+        chai.request(server).post('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of employee with invalid employee lastName', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.lastName = invalidLastName
+        chai.request(server).post('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of employee with invalid employee email', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.email = invalidEmail
+        chai.request(server).post('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of employee with invalid employee contact number', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.contactNo = invalidContactNo
+        chai.request(server).post('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of employee with invalid employee ID', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.empId = invalidEmpId
+        EmployeeModel.deleteMany().then((qwe) => {
+            let temp = new EmployeeModel(employee)
+            temp.save().then((data) => {
+                chai.request(server).post('/employees')
+                    .set('content-type', 'application/json')
+                    .send(invalidEmployee)
+                    .end((error, res) => {
+                        res.should.have.status(400)
+                        res.should.have.be.a('object')
+                        done()
+                    })
+            }).catch(err => {
+                console.log('saving error')
+            })
+        }).catch(err => {
+            console.log('deleting error')
+        })
+    })
+
+    // --------
+    it('PUT\tRejection of employee with invalid employee type', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.type = invalidType
+        chai.request(server).put('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of employee with invalid employee firstName', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.firstName = invalidFirstName
+        chai.request(server).put('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of employee with invalid employee lastName', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.lastName = invalidLastName
+        chai.request(server).put('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of employee with invalid employee email', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.email = invalidEmail
+        chai.request(server).put('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of employee with invalid employee contact number', done => {
+        invalidEmployee = Object.assign({}, employee);
+        invalidEmployee.contactNo = invalidContactNo
+        chai.request(server).put('/employees')
+            .set('content-type', 'application/json')
+            .send(invalidEmployee)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.should.have.be.a('object')
                 done()
             })
     })
