@@ -10,23 +10,31 @@ chai.use(chaiHttp);
 describe('Employees', () => {
     let server;
     let employee = {
-        empId: "IT16005372",
-        type: "Site Manager",
-        firstName: "Sameer",
-        lastName: "Basil",
-        address: "Colombo",
-        email: "smrbasil@gmail.com",
-        contactNo: "0770695817"
+        empId: 'IT16005372',
+        type: 'Site Manager',
+        firstName: 'Sameer',
+        lastName: 'Basil',
+        address: 'Colombo',
+        email: 'smrbasil@gmail.com',
+        contactNo: '0770695817'
     }
     let updatedEmployee = {
-        empId: "IT16005372",
-        type: "Site Manager",
-        firstName: "Sameer",
-        lastName: "Basil",
-        address: "Colombo",
-        email: "smrbasil@gmail.com",
-        contactNo: "0770695817"
+        empId: 'IT16005372',
+        type: 'Site Manager',
+        firstName: 'Sameer',
+        lastName: 'Basil',
+        address: 'Colombo',
+        email: 'smrbasil@gmail.com',
+        contactNo: '0770695817'
     }
+    let invalidEmployee = undefined
+    let invalidEmpId = 'IT16005372'
+    let invalidType = 'sjkldghklsdfj'
+    let invalidFirstName = '4563456bjhkjbh'
+    let invalidLastName = '3456b345jh7g4357jh347h'
+    let invalidAddress = '' // not sure whether there are any invalid addresses
+    let invalidEmail = '' // not sure whether
+    let invalidContactNo = ''
 
     before((done) => {
         server = require('../app')

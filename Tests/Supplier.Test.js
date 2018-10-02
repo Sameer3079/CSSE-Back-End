@@ -10,24 +10,24 @@ chai.use(chaiHttp);
 describe('Suppliers', () => {
     let server;
     let supplier = {
-        supplierId: "SP001",
-        name: "Sameer Basil",
-        bankAccount: "00005848451231",
-        address: "Boralasgamuwa",
-        email: "smrbasil4@gmail.com",
-        contactNo: "0716650678",
-        items: ["ihjkb456hj4k560", "jh435kjh345bk45b"],
+        supplierId: 'SP001',
+        name: 'Sameer Basil',
+        bankAccount: '00005848451231',
+        address: 'Boralasgamuwa',
+        email: 'smrbasil4@gmail.com',
+        contactNo: '0716650678',
+        items: ['ihjkb456hj4k560', 'jh435kjh345bk45b'],
         available: true,
         blacklisted: false
     }
     let updatedSupplier = {
-        supplierId: "SP001",
-        name: "Sameer Hilmy",
-        bankAccount: "00005848451231",
-        address: "Boralasgamuwa",
-        email: "smrbasil4@gmail.com",
-        contactNo: "0716650678",
-        items: ["ihjkb456hj4k560", "jh435kjh345bk45b"],
+        supplierId: 'SP001',
+        name: 'Sameer Hilmy',
+        bankAccount: '00005848451231',
+        address: 'Boralasgamuwa',
+        email: 'smrbasil4@gmail.com',
+        contactNo: '0716650678',
+        items: ['ihjkb456hj4k560', 'jh435kjh345bk45b'],
         available: true,
         blacklisted: false
     }

@@ -10,12 +10,12 @@ chai.use(chaiHttp);
 describe('Business Policies', () => {
     let server;
     let businessPolicy = {
-        policyId: "BP_3079",
-        description: "Test policy"
+        policyId: 'BP_3079',
+        description: 'Test policy'
     }
     let updatedBusinessPolicy = {
-        policyId: "BP_3079",
-        description: "Test policy updated"
+        policyId: 'BP_3079',
+        description: 'Test policy updated'
     }
 
     // Start Server
