@@ -10,6 +10,10 @@ const SupplierSchema = new Schema({
         type : String,
         required : true
     },
+    nic : {
+        type : String,
+        required : true
+    },
     address : {
         type : String,
         required : true
