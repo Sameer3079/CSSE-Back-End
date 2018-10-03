@@ -50,7 +50,7 @@ describe('Suppliers', () => {
         })
     });
 
-    it('GET-ALL\tNumber of suppliers should be zero',done => {
+    it('GET-ALL\tNumber of suppliers should be zero', done => {
         chai.request(server).get('/suppliers')
             .end((error, res) => {
                 res.should.have.status(200)
@@ -218,21 +218,25 @@ describe('Suppliers', () => {
                 done()
             })
     })
-    
+
     it('POST\tRejection of supplier with invalid (Duplicate) supplier id', done => {
         invalidSupplier = Object.assign({}, supplier)
         let temp = new SupplierModel(supplier)
-        temp.save().then(data => {
-            chai.request(server).post('/suppliers')
-                .set('content-type', 'application/json')
-                .send(invalidSupplier)
-                .end((error, res) => {
-                    res.should.have.status(400)
-                    res.body.should.have.be.a('object')
-                    done()
-                })
+        SupplierModel.deleteMany().then(data => {
+            temp.save().then(data => {
+                chai.request(server).post('/suppliers')
+                    .set('content-type', 'application/json')
+                    .send(invalidSupplier)
+                    .end((error, res) => {
+                        res.should.have.status(400)
+                        res.body.should.have.be.a('object')
+                        done()
+                    })
+            }).catch(error => {
+                console.log('Error saving')
+            })
         }).catch(error => {
-            console.log('Error saving')
+            console.log('Error emptying collection')
         })
     })
 
