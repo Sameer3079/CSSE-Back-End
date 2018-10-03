@@ -17,6 +17,8 @@ describe('Business Policies', () => {
         policyId: 'BP_3079',
         description: 'Test policy updated'
     }
+    let invalidBusinessPolicy
+    let invalidPolicyId = 'BP_1234'
 
     // Start Server
     // Delete all records in the businessPolicies collection
@@ -87,6 +89,39 @@ describe('Business Policies', () => {
         chai.request(server).del('/business-policies/' + businessPolicy.policyId)
             .end((error, res) => {
                 res.should.have.status(200)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of policy with invalid (duplicate) policy ID', (done) => {
+        BusinessPolicyModel.deleteMany().then(data => {
+            let temp = new BusinessPolicyModel(businessPolicy)
+            temp.save().then(data => {
+                chai.request(server).post('/business-policies')
+                    .set('content-type', 'application/json')
+                    .send(businessPolicy)
+                    .end((error, res) => {
+                        res.should.have.status(400)
+                        res.body.should.have.be.a('object')
+                        done()
+                    })
+            }).catch(error => {
+                console.log('Error adding')
+            })
+        }).catch(error => {
+            console.log('Error emptying collection')
+        })
+    })
+
+    it('PUT\tRejection of policy with invalid (Not Found) policy ID', (done) => {
+        invalidBusinessPolicy = Object.assign({}, businessPolicy)
+        invalidBusinessPolicy.policyId = invalidPolicyId
+        chai.request(server).put('/business-policies')
+            .set('content-type', 'application/json')
+            .send(invalidBusinessPolicy)
+            .end((error, res) => {
+                res.should.have.status(400)
                 res.body.should.have.be.a('object')
                 done()
             })
