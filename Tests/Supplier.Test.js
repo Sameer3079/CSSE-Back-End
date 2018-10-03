@@ -31,7 +31,8 @@ describe('Suppliers', () => {
         available: true,
         blacklisted: false
     }
-
+    let invalidSupp
+    let invalidSupplierId = 'qwe' //TODO:
     // Start Server
     // Delete all records in the suppliers collection
     before((done) => {

@@ -32,7 +32,7 @@ describe('Employees', () => {
     let invalidType = 'sjkldghklsdfj'
     let invalidFirstName = '4563456bjhkjbh'
     let invalidLastName = '3456b345jh7g4357jh347h'
-    let invalidEmail = 'bkjhg2345kjg236hkjg' // not sure whether
+    let invalidEmail = 'bkjhg2345kjg236hkjg'
     let invalidContactNo = '81230hgjkfdgkj'
 
     before((done) => {
