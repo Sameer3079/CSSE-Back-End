@@ -29,9 +29,28 @@ var OrderController = function(){
     }
 
 
+    this.getAllSuppliers = () => {
+
+        return new Promise((resolve, reject) => {
+
+            SupplierShema.find().exec()
+            .then((data) => {
+                
+                if(data.length !== 0 ){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    resolve({"status":"205","message":"Can not find order"});
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err"+err});
+            })
+        })
+    }
 
 
-    
+
 
 }
 
