@@ -51,6 +51,27 @@ var OrderController = function(){
 
 
 
+    this. getOrderBySupplier = (nic) => {
+
+        return new Promise((resolve,reject) => {
+            SupplierShema.find({nic : nic})
+            .then((data) => {
+                
+                if(data.length === 1){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    resolve({"status":"205","message":"Can not find supplir"})
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
+        })
+    }
+
+
+
 
 }
 
