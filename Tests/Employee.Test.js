@@ -28,7 +28,7 @@ describe('Employees', () => {
         contactNo: '0770695817'
     }
     let invalidEmployee = undefined
-    let invalidEmpId = 'IT16005372'
+    let invalidEmpId = 'IT16005123'
     let invalidType = 'sjkldghklsdfj'
     let invalidFirstName = '4563456bjhkjbh'
     let invalidLastName = '3456b345jh7g4357jh347h'
@@ -181,13 +181,34 @@ describe('Employees', () => {
             })
     })
 
-    it('POST\tRejection of employee with invalid employee ID', done => {
+    it('POST\tRejection of employee with invalid (duplicate) employee ID', done => {
+        invalidEmployee = Object.assign({}, employee);
+        EmployeeModel.deleteMany().then((qwe) => {
+            let temp = new EmployeeModel(employee)
+            temp.save().then((data) => {
+                chai.request(server).post('/employees')
+                    .set('content-type', 'application/json')
+                    .send(invalidEmployee)
+                    .end((error, res) => {
+                        res.should.have.status(400)
+                        res.should.have.be.a('object')
+                        done()
+                    })
+            }).catch(err => {
+                console.log('saving error')
+            })
+        }).catch(err => {
+            console.log('deleting error')
+        })
+    })
+
+    it('PUT\tRejection of employee with invalid (Not Found) employee ID', done => {
         invalidEmployee = Object.assign({}, employee);
         invalidEmployee.empId = invalidEmpId
         EmployeeModel.deleteMany().then((qwe) => {
             let temp = new EmployeeModel(employee)
             temp.save().then((data) => {
-                chai.request(server).post('/employees')
+                chai.request(server).put('/employees')
                     .set('content-type', 'application/json')
                     .send(invalidEmployee)
                     .end((error, res) => {

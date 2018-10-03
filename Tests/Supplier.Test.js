@@ -32,7 +32,7 @@ describe('Suppliers', () => {
         blacklisted: false
     }
     let invalidSupplier
-    let invalidSupplierId = 'qwe'
+    let invalidSupplierId = 'SP001123'
     let invalidName = '43j6hhh5jkl34h56lk34h5'
     let invalidBankAccount = 'lkh456kj345634mn6l4kj'
     let invalidEmail = 'kjl56hk3456kl4jh3j6'
@@ -218,12 +218,30 @@ describe('Suppliers', () => {
                 done()
             })
     })
-
-    it('POST\tRejection of supplier with invalid supplier id', done => {
+    
+    it('POST\tRejection of supplier with invalid (Duplicate) supplier id', done => {
         invalidSupplier = Object.assign({}, supplier)
         let temp = new SupplierModel(supplier)
         temp.save().then(data => {
             chai.request(server).post('/suppliers')
+                .set('content-type', 'application/json')
+                .send(invalidSupplier)
+                .end((error, res) => {
+                    res.should.have.status(400)
+                    res.body.should.have.be.a('object')
+                    done()
+                })
+        }).catch(error => {
+            console.log('Error saving')
+        })
+    })
+
+    it('PUT\tRejection of supplier with invalid (Not Found) supplier id', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.supplierId = invalidSupplierId
+        let temp = new SupplierModel(supplier)
+        temp.save().then(data => {
+            chai.request(server).put('/suppliers')
                 .set('content-type', 'application/json')
                 .send(invalidSupplier)
                 .end((error, res) => {
