@@ -203,7 +203,6 @@ describe('Employees', () => {
         })
     })
 
-    // --------
     it('PUT\tRejection of employee with invalid employee type', done => {
         invalidEmployee = Object.assign({}, employee);
         invalidEmployee.type = invalidType

@@ -1,8 +1,9 @@
 let mongoose = require('../Model/Employee')
 let employeeModel = mongoose.model('Employee')
-let emailRegEx = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-let textOnlyRegEx = /^[a-zA-Z ]*$/;
-let contactNoRegEx = /^[0-9]{1,14}$/
+let regex = require('../Utilities/Regex')
+let emailRegEx = regex.emailRegEx
+let textOnlyRegEx = regex.textOnlyRegEx
+let contactNoRegEx = regex.contactNoRegEx
 
 let employeeController = function () {
 

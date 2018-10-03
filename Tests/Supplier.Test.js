@@ -31,18 +31,26 @@ describe('Suppliers', () => {
         available: true,
         blacklisted: false
     }
-    let invalidSupp
-    let invalidSupplierId = 'qwe' //TODO:
+    let invalidSupplier
+    let invalidSupplierId = 'qwe'
+    let invalidName = '43j6hhh5jkl34h56lk34h5'
+    let invalidBankAccount = 'lkh456kj345634mn6l4kj'
+    let invalidEmail = 'kjl56hk3456kl4jh3j6'
+    let invalidContactNo = 'jk34l56kl354bWFGA9GH87'
+    let invalidItems = '45jkg624y6i45g6kg45lk2h6'
+    let invalidAvailable = 'pwvuiot378vn-q4'
+    let invalidBlacklisted = '23b67n2346'
+
     // Start Server
     // Delete all records in the suppliers collection
-    before((done) => {
+    before(done => {
         server = require('../app')
-        SupplierModel.deleteMany({}, (error) => {
+        SupplierModel.deleteMany({}, error => {
             done()
         })
     });
 
-    it('GET-ALL\tNumber of suppliers should be zero', (done) => {
+    it('GET-ALL\tNumber of suppliers should be zero',done => {
         chai.request(server).get('/suppliers')
             .end((error, res) => {
                 res.should.have.status(200)
@@ -52,7 +60,7 @@ describe('Suppliers', () => {
             })
     })
 
-    it('POST\tAdding a new supplier', (done) => {
+    it('POST\tAdding a new supplier', done => {
         chai.request(server).post('/suppliers')
             .set('content-type', 'application/json')
             .send(supplier)
@@ -63,7 +71,7 @@ describe('Suppliers', () => {
             })
     })
 
-    it('GET-ALL\tNumber of suppliers should be exactly one', (done) => {
+    it('GET-ALL\tNumber of suppliers should be exactly one', done => {
         chai.request(server).get('/suppliers')
             .end((error, res) => {
                 res.should.have.status(200)
@@ -73,7 +81,7 @@ describe('Suppliers', () => {
             })
     })
 
-    it('GET-ONE\tGetting one supplier', (done) => {
+    it('GET-ONE\tGetting one supplier', done => {
         chai.request(server).get('/suppliers/' + supplier.supplierId)
             .end((error, res) => {
                 res.should.have.status(200)
@@ -92,7 +100,7 @@ describe('Suppliers', () => {
     })
 
 
-    it('PUT\tUpdating a supplier', (done) => {
+    it('PUT\tUpdating a supplier', done => {
         chai.request(server).put('/suppliers')
             .set('content-type', 'application/json')
             .send(updatedSupplier)
@@ -111,7 +119,7 @@ describe('Suppliers', () => {
             })
     })
 
-    it('DELETE\tDeleting a supplier', (done) => {
+    it('DELETE\tDeleting a supplier', done => {
         chai.request(server).del('/suppliers/' + supplier.supplierId)
             .end((error, res) => {
                 res.should.have.status(200)
@@ -120,4 +128,202 @@ describe('Suppliers', () => {
             })
     })
 
+    it('POST\tRejection of supplier with invalid supplier name', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.name = invalidName
+        chai.request(server).post('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of supplier with invalid supplier bank account', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.bankAccount = invalidBankAccount
+        chai.request(server).post('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of supplier with invalid supplier email', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.email = invalidEmail
+        chai.request(server).post('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of supplier with invalid supplier contact number', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.contactNo = invalidContactNo
+        chai.request(server).post('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of supplier with invalid supplier items', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.items = invalidItems
+        chai.request(server).post('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of supplier with invalid supplier available field', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.available = invalidAvailable
+        chai.request(server).post('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of supplier with invalid supplier blacklisted field', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.blacklisted = invalidBlacklisted
+        chai.request(server).post('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('POST\tRejection of supplier with invalid supplier id', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        let temp = new SupplierModel(supplier)
+        temp.save().then(data => {
+            chai.request(server).post('/suppliers')
+                .set('content-type', 'application/json')
+                .send(invalidSupplier)
+                .end((error, res) => {
+                    res.should.have.status(400)
+                    res.body.should.have.be.a('object')
+                    done()
+                })
+        }).catch(error => {
+            console.log('Error saving')
+        })
+    })
+
+    it('PUT\tRejection of supplier with invalid supplier name', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.name = invalidName
+        chai.request(server).put('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of supplier with invalid supplier bank account', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.bankAccount = invalidBankAccount
+        chai.request(server).put('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of supplier with invalid supplier email', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.email = invalidEmail
+        chai.request(server).put('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of supplier with invalid supplier contact number', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.contactNo = invalidContactNo
+        chai.request(server).put('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of supplier with invalid supplier items', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.items = invalidItems
+        chai.request(server).put('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of supplier with invalid supplier available field', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.available = invalidAvailable
+        chai.request(server).put('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
+
+    it('PUT\tRejection of supplier with invalid supplier blacklisted field', done => {
+        invalidSupplier = Object.assign({}, supplier)
+        invalidSupplier.blacklisted = invalidBlacklisted
+        chai.request(server).put('/suppliers')
+            .set('content-type', 'application/json')
+            .send(invalidSupplier)
+            .end((error, res) => {
+                res.should.have.status(400)
+                res.body.should.have.be.a('object')
+                done()
+            })
+    })
 })
