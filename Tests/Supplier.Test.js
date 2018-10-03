@@ -244,17 +244,21 @@ describe('Suppliers', () => {
         invalidSupplier = Object.assign({}, supplier)
         invalidSupplier.supplierId = invalidSupplierId
         let temp = new SupplierModel(supplier)
-        temp.save().then(data => {
-            chai.request(server).put('/suppliers')
-                .set('content-type', 'application/json')
-                .send(invalidSupplier)
-                .end((error, res) => {
-                    res.should.have.status(400)
-                    res.body.should.have.be.a('object')
-                    done()
-                })
+        SupplierModel.deleteMany().then(data => {
+            temp.save().then(data => {
+                chai.request(server).put('/suppliers')
+                    .set('content-type', 'application/json')
+                    .send(invalidSupplier)
+                    .end((error, res) => {
+                        res.should.have.status(400)
+                        res.body.should.have.be.a('object')
+                        done()
+                    })
+            }).catch(error => {
+                console.log('Error saving')
+            })
         }).catch(error => {
-            console.log('Error saving')
+            console.log('Error emptying collection')
         })
     })
 
