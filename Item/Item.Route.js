@@ -9,8 +9,9 @@ const ItemController    = require('./Item.Controller');
      * 2018/09/30
      */
 Route.post('/' , (req,res) => {
-
+    console.log(req.body);
     ItemController.addItem(req.body)
+    
     .then((data) => {
         res.status(data.status).send({"message":data.message});
     })
