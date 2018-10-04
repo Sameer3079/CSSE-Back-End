@@ -30,3 +30,33 @@ const SupplierController   = require("./Supplier.Controller");
             res.status(err.status).send({"message":err.message});
         });
     })
+
+
+
+    Router.get('/:nic' , (req, res)  => {
+        SupplierController.getSupplierBynic(req.params.nic)
+        .then((data) => {
+            res.status(data.status).send(data.message);
+        })
+        .catch((err) => {
+            res.status(err.status).send({"message":err.message});
+        });
+    })
+
+
+
+    Router.get('/getItems' , (req, res)  => {
+        SupplierController.getAvailableItems()
+        .then((data) => {
+            res.status(data.status).send(data.message);
+        })
+        .catch((err) => {
+            res.status(err.status).send({"message":err.message});
+        });
+    })
+
+
+
+
+
+    module.exports = Router;

@@ -1,7 +1,7 @@
 const Mongoose          = require("../Model/Supplier");
 const SupplierShema        = Mongoose.model("Supplier");
 
-var OrderController = function(){
+var SupplierController = function(){
 
 
     this.addSupplier = (Data) => {
@@ -50,18 +50,20 @@ var OrderController = function(){
     }
 
 
-
-    this. getSupplierBynic = (nic) => {
+    this.getSupplierBynic = (nic) => {
 
         return new Promise((resolve,reject) => {
+            
             SupplierShema.find({nic : nic})
             .then((data) => {
                 
                 if(data.length === 1){
-                    resolve({"status":"200","message":data});
+                    resolve({"status":"200","message":data[0].items});
+                    console.log("----");
                 }
                 else{
-                    resolve({"status":"205","message":"Can not find supplir"})
+                    resolve({"status":"205","message":"Can not find supplir"});
+                    console.log("+++++");
                 }
             })
             .catch((err) => {
@@ -71,43 +73,32 @@ var OrderController = function(){
     }
 
 
+    this.getAvailableItems = () => {
+
+        return new Promise((resolve, reject) => {
+
+            SupplierShema.find().exec()
+            .then((data) => {
+                
+                if(data.length !== 0 ){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    resolve({"status":"202","message":"Can not find order"});
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err"+err});
+            })
+        })
+    }
 
 
+
+    
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = new SupplierController();
 
 
 
