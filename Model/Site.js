@@ -1,18 +1,31 @@
-let mongoose = require('mongoose')
-let schema = mongoose.Schema
+const Mongoose          = require("mongoose");
+const Float             = require("mongoose-float");
+const Schema            = Mongoose.Schema;
 
-let siteSchema = new schema({
-    siteId: { required: true, type: String },
-    name: { required: true, type: String },
-    address: { required: true, type: String },
-    items: { required: true, type: Array },                          
-    storageCapacity : {required: true, type: number},
-    currentCapacity : {required: true, type: number},
-    siteManager :  { required: false, type: String } 
-})
+const SiteShema = new Schema({
 
-mongoose.model('Site', siteSchema, 'sites')
+    siteName : {
+        type : String,
+        require : true
+    },
+    address : {
+        type : String,
+        require : true
+    },
+    items : {
+        type : Array,
+        require : true
+    },
+    storageCapacity :{
+        type :Float,
+        require : true
+    },
+    currentCapacity : {
+        type : Float,
+        require :true
+    }
+});
 
-module.exports = mongoose
- 
- 
+Mongoose.model('Site' , SiteShema);
+
+module.exports = Mongoose;

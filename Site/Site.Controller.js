@@ -1,105 +1,92 @@
-let mongoose = require('../Model/Site')
-let siteModel = mongoose.model('Site')
+const Mongoose          = require("../Model/Site");
+const SiteSchema        = Mongoose.model("Site");
 
-let siteController = function () {
+const SiteConroller = function(){
 
-    this.getAll = () => {
-        return new Promise((resolve, reject) => {
-            siteModel.find().then(data => {
-                resolve({ status: 200, sites: data })
-            }).catch(error => {
-                reject({ status: 500, message: 'Internal Server Error '+ error })
-            })
-        })
-    }
-
-    this.getOne = (id) => {
-        return new Promise((resolve, reject) => {
-            siteModel.findOne({ siteId: id }).then(data => {
-                if (data !== null) {
-                    resolve({ status: 200, data: data })
-                } else {
-                    reject({ status: 404, message: 'Site is not found' })
-                }
-            }).catch(error => {
-                reject({ status: 500, message: 'Internal Server  ' + error })
-            })
-        })
-    }
-
-    this.addSite = (req) => {
-        return new Promise((reject, resolve) => {
-                siteModel.findOne({ siteId: reqBody.siteId }).then(data => {
-                    if (data === null) {
-                        let site = new siteModel({
-                            siteId: reqBody.siteId,
-                            name: reqBody.name,
-                            address: reqBody.address,
-                            items: data.items,
-                            storageCapacity: reqBody.storageCapacity,
-                            currentCapacity: reqBody.currentCapacity,
-                            siteManager: reqBody.siteManager 
-                        })
-                        site.save().then(data => {
-                            resolve({ status: 201, message: 'Site has been added' })
-                        }).catch(error => {
-                            reject({ status: 500, message: 'Internal Server Error ' + error })
-                        })
-                    }
-                    else {
-                        reject({ status: 400, message: 'site ID is already in use' })
-                    }
-                }).catch(error => {
-                    reject({ status: 500, message: 'Internal Server Error' })
-                })
-        })
-        
-    }
-
-    this.updateSite = (req) => {
-        return new Promise((resolve, reject) => {
-            siteModel.findOne({ siteId: req.body.siteId }).then(data => {
-                if (data !== null) {
-                    data.siteId = req.body.siteId
-                    data.name = req.body.name
-                    data.address = req.body.address
-                    data.items = [reqBody.items.name, reqBody.items.quantity ]
-                    data.storageCapacity = req.body.storageCapacity
-                    data.currentCapacity = req.body.currentCapacity
-                    data.siteManager = req.body.siteManager 
-                    data.save().then(data => {
-                        resolve({ status: 200, message: 'Site has been updated' })
-                    }).catch(error => {
-                        console.log(error)
-                        reject({ status: 500, message: 'Internal Server Error ' +error })
+    /**
+     * 
+     * Create new site service.
+     */
+    this.addSite = (Data) => {
+        return new Promise((resolve,reject) => {
+            
+            /**
+             * Check site name already existing.
+             */
+            SiteSchema.find({siteName : Data.siteName}).exec()
+            .then((data) => {
+                if(data.length === 0){
+    
+                    var site = new SiteSchema({
+                        siteName : Data.siteName,
+                        address : Data.address,
+                        items : Data.items,
+                        storageCapacity : Data.storageCapacity,
+                        currentCapacity : Data.currentCapacity,
+                        managerName : Data.managerName
+                    });
+    
+                    site.save()
+                    .then(() => {
+                        resolve({"status":"201","message":"Site Created"});
                     })
+                    .catch((err) => {
+                        reject({"status":"404","message":"Error "+err});
+                    });
                 }
-                else {
-                    reject({ status: 400, message: 'Invalid Site ID' })
+                else{
+                    resolve({"status":"200","message":"Site "+Data.siteName+" is aready exsist"});
                 }
-            }).catch(error => {
-                reject({ status: 500, message: 'Error searching for Site' })
             })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
+        });
+    }
+
+    
+    /**
+     * Get all site list
+     */
+    this.getAllSites = () => {
+        return new Promise((resolve,reject) => {
+            SiteSchema.find().exec()
+            .then((data) => {
+                if(data.length !== 0){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    reject({"status":"204","message":"No Content"});
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
         })
     }
 
-    this.removeSite = (siteId) => {
-        return new Promise((resolve, reject) => {
-            siteModel.findOne({ siteId: siteId }).then(data => {
-                if (data !== null) {
-                    siteModel.deleteOne({ siteId: siteId }).then(data => {
-                        resolve({ status: 200, message: 'Site has been removed' })
-                    }).catch(error => {
-                        reject({ status: 500, message: 'Error removing site' })
-                    })
-                } else {
-                    reject({ status: 400, message: 'site not found' })
+
+    /**
+     * Get a particuler site's item list, find by item list using site name.
+     */
+    this.getItemOfSite = (name) => {
+        return new Promise((resolve,reject) => {
+
+            SiteSchema.find({siteName : name}).exec()
+            .then((data) => {
+
+                if(data.length === 1){
+                    resolve({"status":"200","message":data[0].items});
                 }
-            }).catch(error => {
-                reject({ status: 500, message: 'Error occured when searching for site' })
+                else{
+                    resolve({"status":"205","message":"Can not find site"});
+                }
             })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
         })
     }
 }
 
-module.exports = new siteController()
+module.exports = new SiteConroller();
