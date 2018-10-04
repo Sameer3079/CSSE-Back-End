@@ -33,6 +33,10 @@ const SupplierSchema = new Schema({
     availability : {
         type : Boolean,
         required : true
+    },
+    blckList : {
+        type : String,
+        required : true
     }
 });
 
