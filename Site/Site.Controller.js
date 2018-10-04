@@ -35,7 +35,7 @@ let siteController = function () {
                             siteId: reqBody.siteId,
                             name: reqBody.name,
                             address: reqBody.address,
-                            items: [ reqBody.items.name, reqBody.items.quantity ],
+                            items: data.items,
                             storageCapacity: reqBody.storageCapacity,
                             currentCapacity: reqBody.currentCapacity,
                             siteManager: reqBody.siteManager 
