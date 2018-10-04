@@ -51,7 +51,7 @@ var OrderController = function(){
 
 
 
-    this. getOrderBySupplier = (nic) => {
+    this. getSupplierBynic = (nic) => {
 
         return new Promise((resolve,reject) => {
             SupplierShema.find({nic : nic})

@@ -6,7 +6,6 @@ const SupplierController   = require("./Supplier.Controller");
      * POST 
      * If success, Return status code as 201
      * Created By Sahiru Galappaththi
-     * 2018/09/30
      */
 
     Router.post('/' , (req, res) => {
@@ -19,3 +18,15 @@ const SupplierController   = require("./Supplier.Controller");
             res.status(err.status).send({"message":err.message});
         });
     });
+
+
+
+    Router.get('/' , (req, res)  => {
+        SupplierController.getAllSuppliers()
+        .then((data) => {
+            res.status(data.status).send(data.message);
+        })
+        .catch((err) => {
+            res.status(err.status).send({"message":err.message});
+        });
+    })
