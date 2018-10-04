@@ -4,7 +4,7 @@ const SupplierController   = require("./Supplier.Controller");
 
 /**
      * POST 
-     * If success, Return status code as 201
+     * If success, Return status code as 200
      * Created By Sahiru Galappaththi
      */
 
