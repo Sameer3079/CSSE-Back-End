@@ -23,6 +23,10 @@ const SiteShema = new Schema({
     currentCapacity : {
         type : Float,
         require :true
+    },
+    siteManager : {
+        type : String,
+        require : false
     }
 });
 

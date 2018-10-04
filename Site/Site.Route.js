@@ -1,45 +1,55 @@
-let express = require('express')
-let router = express.Router()
-let siteController = require('./Site.Controller')
+const Express           = require("express");
+const Route             = Express.Router();
+const SiteController    = require("./Site.Controller");
 
-router.get('/', (req, res) => {
-    siteController.getAll().then(data => {
-        res.status(data.status).send(data.sites)
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
+/**
+ * POST 
+ * create new site and it return status code as 201
+ * 2018/09/30
+ */
+Route.post('/' , (req, res)  => {
+    console.log(req.body);
+    SiteController.addSite(req.body)
+    .then((data) => {
+        res.status(data.status).send({"message":data.message});
     })
+    .catch((err) => {
+        console.log(err);
+        res.status(err.status).send({"message":data.message});
+    });
+});
+
+
+
+    /**
+     * GET 
+     * Return status code as 200
+     * 2018/09/30
+     */
+Route.get('/' , (req,res) => {
+    SiteController.getAllSites()
+    .then((data) => {
+        res.status(data.status).send(data.message)
+    })
+    .catch((err) => {
+        res.status(err.status).send({"message":err.message});
+    });
 })
 
-router.get('/:id', (req, res) => {
-    siteController.getOne(req.params.id).then(data => {
-        res.status(data.status).send(data.data)
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
+
+    /**
+     * GET. 
+     * Return status code as 200 if success.
+     * 2018/09/30.
+     */
+Route.get('/:name' , (req,res) => {
+    SiteController.getItemOfSite(req.params.name)
+    .then((data) => {
+        res.status(data.status).send(data.message);
     })
+    .catch((err) => {
+        res.status(err.status).send(err.message);
+    });
 })
 
-router.post('/', (req, res) => {
-    siteController.addSite(req).then(data => {
-        res.status(data.status).send({ message: data.message })
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
-    })
-})
-
-router.put('/', (req, res) => {
-    siteController.updateSite(req).then(data => {
-        res.status(data.status).send({ message: data.message })
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
-    })
-})
-
-router.delete('/:id', (req, res) => {
-    siteController.removeSite(req.params.id).then(data => {
-        res.status(data.status).send({ message: data.message })
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
-    })
-})
-
-module.exports = router
+module.exports = Route;

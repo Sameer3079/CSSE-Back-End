@@ -15,4 +15,14 @@ Route.post('/' , (req,res) => {
 
 });
 
+Route.get('/' , (req,res) => {
+    ItemController.getAllItem()
+    .then((data) => {
+        res.status(data.status).send(data.message)
+    })
+    .catch((err) => {
+        res.status(err.status).send({"message":err.message});
+    });
+})
+
 module.exports = Route;

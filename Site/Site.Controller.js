@@ -9,7 +9,7 @@ const SiteConroller = function(){
      */
     this.addSite = (Data) => {
         return new Promise((resolve,reject) => {
-            
+
             /**
              * Check site name already existing.
              */
@@ -23,7 +23,8 @@ const SiteConroller = function(){
                         items : Data.items,
                         storageCapacity : Data.storageCapacity,
                         currentCapacity : Data.currentCapacity,
-                        managerName : Data.managerName
+                        managerName : Data.managerName,
+                        siteManager: Data.siteManager
                     });
     
                     site.save()
