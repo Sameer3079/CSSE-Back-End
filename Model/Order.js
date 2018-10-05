@@ -8,8 +8,12 @@ const OrderShema = new Schema({
         type : String,
         required : true
     },
+    quentity : {
+        type : Number,
+        required : true
+    },
     items : {
-        type : Array,
+        type : String,
         required : true
     },
     orderStatus : {
