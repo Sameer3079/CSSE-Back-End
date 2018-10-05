@@ -15,15 +15,16 @@ const SiteConroller = function(){
              */
             SiteSchema.find({siteName : Data.siteName}).exec()
             .then((data) => {
-    
-                if(data.length === 0 ){
+                if(data.length === 0){
     
                     var site = new SiteSchema({
                         siteName : Data.siteName,
                         address : Data.address,
                         items : Data.items,
                         storageCapacity : Data.storageCapacity,
-                        currentCapacity : Data.currentCapacity
+                        currentCapacity : Data.currentCapacity,
+                        managerName : Data.managerName,
+                        siteManager: Data.siteManager
                     });
     
                     site.save()
@@ -44,7 +45,10 @@ const SiteConroller = function(){
         });
     }
 
-
+    
+    /**
+     * Get all site list
+     */
     this.getAllSites = () => {
         return new Promise((resolve,reject) => {
             SiteSchema.find().exec()
@@ -54,6 +58,29 @@ const SiteConroller = function(){
                 }
                 else{
                     reject({"status":"204","message":"No Content"});
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
+        })
+    }
+
+
+    /**
+     * Get a particuler site's item list, find by item list using site name.
+     */
+    this.getItemOfSite = (name) => {
+        return new Promise((resolve,reject) => {
+
+            SiteSchema.find({siteName : name}).exec()
+            .then((data) => {
+
+                if(data.length === 1){
+                    resolve({"status":"200","message":data[0].items});
+                }
+                else{
+                    resolve({"status":"205","message":"Can not find site"});
                 }
             })
             .catch((err) => {

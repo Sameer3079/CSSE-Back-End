@@ -2,12 +2,15 @@ const Mongoose      = require("../Config/Dbconfig");
 const Schema        = Mongoose.Schema;
 
 const PaymentSchema = new Schema({
-
     orderId:{
-        type:Number,
+        type:String,
         required:true
     },
     supplierName:{
+        type:String,
+        required:true
+    },
+    date:{
         type:String,
         required:true
     },
@@ -23,9 +26,6 @@ const PaymentSchema = new Schema({
         type:Boolean,
         required:true
     }
-    
-
-
 });
 
 Mongoose.model('Payment' , PaymentSchema);

@@ -18,5 +18,5 @@ app.listen(8093 , (err) => {
         process.exit(-1);
     }
 
-    console.log("server is running port 8093");
+    console.log("Server is running on port 8093");
 })
