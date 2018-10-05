@@ -3,6 +3,11 @@ const PaymentSchema    = Mongoose.model("Payment");
 
 var PaymentController = function(){
 
+    /**
+     * 
+     * adding new payment data
+     */
+
     this.addPayment = (Data) => {
         return new Promise((resolve,reject) => {
             var payment = new PaymentSchema({
@@ -25,6 +30,12 @@ var PaymentController = function(){
         })
     }
 
+    /**
+     * 
+     * getting all payments
+     */
+
+
     this.getAllPayments = () => {
         return new Promise((resolve,reject) => {
             PaymentSchema.find().exec()
@@ -41,6 +52,12 @@ var PaymentController = function(){
             });
         })
     }
+
+    /**
+     * 
+     * getting only paid payments
+     */
+
     this.getPaidPayments = () => {
         return new Promise((resolve,reject) => {
             PaymentSchema.find({status:{$eq:true}}).exec()
@@ -57,6 +74,12 @@ var PaymentController = function(){
             });
         })
     }
+
+    /**
+     * 
+     * getting pending payments
+     */
+
     this.getPendingPayments = () => {
         return new Promise((resolve,reject) => {
             PaymentSchema.find({status:{$eq:false}}).exec()
@@ -70,6 +93,22 @@ var PaymentController = function(){
             })
             .catch((err) => {
                 reject({"status":"500","message":"Err "+err});
+            });
+        })
+    }   
+    /**
+     * 
+     * making the payment by updating the status true
+     */
+
+    this.makePayment = (id) => {
+        return new Promise((resolve, reject) => {
+            BookSchema.update({_id:id}, {$set: {status: true}})
+            .then(() => {
+                resolve({status:200 , message:"Payment made"});
+            })
+            .catch((err) => {
+                reject({status:500 , message:err});
             });
         })
     }
