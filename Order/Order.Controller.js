@@ -3,6 +3,11 @@ const OrderShema = Mongoose.model("Order");
 
 var OrderController = function () {
 
+    /**
+     * 
+     * Making a new order
+     */
+
     this.addOrder = (Data) => {
 
         return new Promise((resolve, reject) => {
@@ -24,6 +29,11 @@ var OrderController = function () {
                 });
         })
     }
+
+    /**
+     * 
+     * getting all orders
+     */
     this.getAllOrders = () => {
         return new Promise((resolve, reject) => {
             OrderShema.find().exec()
@@ -41,6 +51,11 @@ var OrderController = function () {
         })
     }
 
+
+    /**
+     * 
+     * getting a order by its id
+     */
     this.getOrderByID = (id) => {
         return new Promise((resolve, reject) => {
             OrderShema.find({ _id: id }).exec()

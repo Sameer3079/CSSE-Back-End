@@ -4,6 +4,11 @@ const OrderController = require("./Order.Controller");
 
 Router.post('/', (req, res) => {
 
+/**
+ * 
+ * making new order
+ */
+
     OrderController.addOrder(req.body)
         .then((data) => {
             res.status(data.status).send({ "message": data.message });
@@ -12,6 +17,10 @@ Router.post('/', (req, res) => {
             res.status(err.status).send({ "message": err.message });
         });
 });
+/**
+ * 
+ *getting all orders
+ */
 Router.get('/', (req, res) => {
     OrderController.getAllOrders()
         .then((data) => {
@@ -21,14 +30,19 @@ Router.get('/', (req, res) => {
             res.status(err.status).send({ "message": err.message });
         });
 })
+
+/**
+ * 
+ * getting order by id
+ */
 Router.get('/:id', (req, res) => {
     OrderController.getOrderByID(req.params.id, req.body)
-      .then(data => {
-        res.status(data.status).send({ message: data.message });
-      })
-      .catch(err => {
-        res.status(err.status).send({ message: err.message });
-      });
-  });
+        .then(data => {
+            res.status(data.status).send({ message: data.message });
+        })
+        .catch(err => {
+            res.status(err.status).send({ message: err.message });
+        });
+});
 module.exports = Router;
 
