@@ -10,6 +10,7 @@ const SiteConroller = function(){
     this.addSite = (Data) => {
         return new Promise((resolve,reject) => {
 
+            //console.log(Data.managerName);
             /**
              * Check site name already existing.
              */
