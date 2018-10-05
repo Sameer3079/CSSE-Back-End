@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
 
 router.put('/', (req, res) => {
     employeeController.updateEmployee(req).then(data => {
-        res.status(data.status).send({ message: data.message })
+        res.status(data.status).send({ message: data.message, updatedEmployee: data.updatedEmployee })
     }).catch(error => {
         res.status(error.status).send({ message: error.message })
     })

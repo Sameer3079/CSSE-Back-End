@@ -57,7 +57,7 @@ let employeeController = function () {
                     data.policyId = req.body.policyId
                     data.description = req.body.description
                     data.save().then(data => {
-                        resolve({ status: 200, message: 'Policy has been updated' })
+                        resolve({ status: 200, message: 'Policy has been updated', updatedBusinessPolicy: data })
                     }).catch(error => {
                         console.log(error)
                         reject({ status: 500, message: 'Internal Server Error' })
