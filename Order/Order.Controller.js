@@ -9,19 +9,30 @@ var OrderController = function(){
     this.addOrder = (Data) => {
         
         return new Promise((resolve,reject) => {
+            
+            /**
+             * get count of all orders
+             */
+            var totalRow = OrderShema.count((err, C) => {
+                console.log(C+1);
+            });
+
+            console.log(totalRow.length);
+            
             var newOrder = new OrderShema({
-                sequential : Data.sequential,
+                sequential : "SEQ"+totalRow.length,
+                quentity : Data.quentity,
                 items : Data.items,
-                orderStatus : Data.orderStatus,
+                orderStatus : "Pending",
                 orderDate : Data.orderDate,
-                isDraftPurchaseOrder : Data.isDraftPurchaseOrder,
+                isDraftPurchaseOrder : true,
                 supplierName : Data.supplierName,
-                onHold : Data.onHold
+                onHold : true
             });
 
             newOrder.save()
             .then(() => {
-                resolve({"status":"200","message":"Order is created"});
+                resolve({"status":"201","message":"Order is created"});
             })
             .catch((err) => {
                 reject({"status":"500","message":"Err "+err});
