@@ -1,5 +1,5 @@
 const Mongoose          = require("../Model/Supplier");
-const SupplierShema        = Mongoose.model("Supplier");
+const SupplierSchema        = Mongoose.model("Supplier");
 
 var SupplierController = function(){
 
@@ -7,7 +7,7 @@ var SupplierController = function(){
     this.addSupplier = (Data) => {
         
         return new Promise((resolve,reject) => {
-            var newSupplier = new SupplierShema({
+            var newSupplier = new SupplierSchema({
                 supplierName : Data.supplierName,
                 bankAccount : Data.bankAccount,
                 nic : Data.nic,
@@ -15,8 +15,7 @@ var SupplierController = function(){
                 email : Data.email,
                 phone : Data.phone,
                 items : Data.items,
-                availability : Data.availability,
-                blckList : Data.blckList
+                blackList :true
             });
 
             newSupplier.save()
@@ -34,7 +33,7 @@ var SupplierController = function(){
 
         return new Promise((resolve, reject) => {
 
-            SupplierShema.find().exec()
+            SupplierSchema.find().exec()
             .then((data) => {
                 
                 if(data.length !== 0 ){
@@ -51,55 +50,36 @@ var SupplierController = function(){
     }
 
 
-    this.getSupplierBynic = (nic) => {
 
-        return new Promise((resolve,reject) => {
-            
-            SupplierShema.find({nic : nic})
-            .then((data) => {
+
+
+
+    // this.getAvailableItems = () => {
+
+    //     return new Promise((resolve, reject) => {
+
+    //         SupplierSchema.find().exec()
+    //         .then((data) => {
                 
-                if(data.length === 1){
-                    resolve({"status":"200","message":data[0].items});
-                    console.log("----");
-                }
-                else{
-                    resolve({"status":"205","message":"Can not find supplir"});
-                    console.log("+++++");
-                }
-            })
-            .catch((err) => {
-                reject({"status":"500","message":"Err "+err});
-            });
-        })
-    }
-
-
-    this.getAvailableItems = () => {
-
-        return new Promise((resolve, reject) => {
-
-            SupplierShema.find().exec()
-            .then((data) => {
-                
-                if(data.length !== 0 ){
-                    resolve({"status":"200","message":data});
-                }
-                else{
-                    resolve({"status":"202","message":"Can not find order"});
-                }
-            })
-            .catch((err) => {
-                reject({"status":"500","message":"Err"+err});
-            })
-        })
-    }
+    //             if(data.length !== 0 ){
+    //                 resolve({"status":"200","message":data});
+    //             }
+    //             else{
+    //                 resolve({"status":"202","message":"Can not find order"});
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             reject({"status":"500","message":"Err"+err});
+    //         })
+    //     })
+    // }
 
     this.update = (id , Data) => {
         return new Promise((resolve,reject) => {
-            SupplierShema.find().exec()
+            SupplierSchema.find().exec()
             .then((data) => {
                 if(data.length === 1){
-                    SupplierShema.update({ _id : id } , Data)
+                    SupplierSchema.update({ _id : id } , Data)
                     .then(() => {
                         resolve({"status":"200","message":"Update Supplier"});
                     })
@@ -120,10 +100,10 @@ var SupplierController = function(){
 
     this.updateSupplier = (id) => {
         return new Promise((resolve, reject) => {
-            SupplierShema.find({_id : id}).exec()
+            SupplierSchema.find({_id : id}).exec()
             .then((data) => {
                 if(data.length === 1){
-                    SupplierShema.deleteOne()
+                    SupplierSchema.deleteOne()
                     .then(() => {
                         resolve({"status":"200","message":"Supplier Delete"});
                     })

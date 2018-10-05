@@ -13,6 +13,7 @@ const SupplierSchema = new Schema({
     nic : {
         type : String,
         required : true
+
     },
     address : {
         type : String,
@@ -27,15 +28,11 @@ const SupplierSchema = new Schema({
         required : true
     },
     items : {
-        type : Array,
-        required : true
-    },
-    availability : {
-        type : Boolean,
-        required : true
-    },
-    blckList : {
         type : String,
+        required : true
+    },
+    blackList : {
+        type : Boolean,
         required : true
     }
 });

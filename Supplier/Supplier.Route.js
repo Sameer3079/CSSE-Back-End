@@ -4,7 +4,7 @@ const SupplierController   = require("./Supplier.Controller");
 
 /**
      * POST 
-     * If success, Return status code as 200
+     * If success, Return status code as 201
      * Created By Sahiru Galappaththi
      */
 
@@ -43,17 +43,20 @@ const SupplierController   = require("./Supplier.Controller");
         });
     })
 
+ 
 
 
-    Router.get('/getItems' , (req, res)  => {
-        SupplierController.getAvailableItems()
-        .then((data) => {
-            res.status(data.status).send(data.message);
-        })
-        .catch((err) => {
-            res.status(err.status).send({"message":err.message});
-        });
-    })
+
+
+    // Router.get('/getItems' , (req, res)  => {
+    //     SupplierController.getAvailableItems()
+    //     .then((data) => {
+    //         res.status(data.status).send(data.message);
+    //     })
+    //     .catch((err) => {
+    //         res.status(err.status).send({"message":err.message});
+    //     });
+    // })
 
 
 
