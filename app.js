@@ -12,7 +12,7 @@ app.use(Cors());
 
 app.use('/' , Routes);
 
-app.listen(8093 , (err) => {
+let server = app.listen(8093 , (err) => {
     if(err){
         console.log(err);
         process.exit(-1);
@@ -20,3 +20,5 @@ app.listen(8093 , (err) => {
 
     console.log("server is running port 8093");
 })
+
+module.exports = server;
