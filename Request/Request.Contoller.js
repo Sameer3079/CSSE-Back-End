@@ -9,8 +9,8 @@ var RequestContoller = function(){
             var newRequest = new RequestShema({
                 itemName:Data.itemName,
                 qty:Data.qty,
-                approved:Data.approved,
-                completed:Data.completed
+                completed:false,
+                approved:false
             });
 
             newRequest.save()
