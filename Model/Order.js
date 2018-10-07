@@ -1,35 +1,15 @@
-const Mongoose = require("mongoose");
-const Flaot = require("mongoose-float");
-const Schema = Mongoose.Schema;
+const Mongoose = require("mongoose")
+const Schema = Mongoose.Schema
 
 const OrderShema = new Schema({
+    orderId: { type: String, required: true },
+    itemName: { type: String, required: true },
+    requestId: { type: String, required: true },
+    quantity: { type: Number, require: true },
+    unitPrice: { type: Number, required: true },
+    orderDate: { type: Date, required: true }
+})
 
-    sequential: {
-        type: String,
-        required: true
-    },
-    quentity : {
-        type : Number,
-        required : true
-    },
-    items : {
-        type : String,
-        required : true
-    },
-    orderDate: {
-        type: Date,
-        require: true
-    },
-    isDraftPurchaseOrder: {
-        type: Boolean,
-        required: true
-    },
-    onHold: {
-        type: Boolean,
-        required: true
-    }
-});
+Mongoose.model('Order', OrderShema)
 
-Mongoose.model('Order', OrderShema);
-
-module.exports = Mongoose;
+module.exports = Mongoose
