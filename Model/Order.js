@@ -8,27 +8,13 @@ const OrderShema = new Schema({
         type: String,
         required: true
     },
-    items:[ {
-        catagory: {
-            type: String,
-            required: true
-        },
-        itemName: {
-            type: String,
-            required: true
-        },
-        quantity: {
-            type: String,
-            required: true
-        },
-        amount: {
-            type: String,
-            required: true
-        }
-    }],
-    orderStatus: {
-        type: String,
-        required: true
+    quentity : {
+        type : Number,
+        required : true
+    },
+    items : {
+        type : String,
+        required : true
     },
     orderDate: {
         type: Date,

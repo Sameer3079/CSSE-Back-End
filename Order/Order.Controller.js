@@ -8,72 +8,152 @@ var OrderController = function () {
      * Making a new order
      */
 
+    /**
+     * Create new order. 
+     */
     this.addOrder = (Data) => {
+        
+        return new Promise((resolve,reject) => {
+            
+            /**
+             * get count of all orders
+             */
+            var totalRow = OrderShema.count((err, C) => {
+                console.log(C+1);
+            });
 
-        return new Promise((resolve, reject) => {
+            console.log(totalRow.length);
+            
             var newOrder = new OrderShema({
-                sequential: Data.sequential,
-                items: Data.items,
-                orderStatus: Data.orderStatus,
-                orderDate: Data.orderDate,
-                isDraftPurchaseOrder: Data.isDraftPurchaseOrder,
-                onHold: Data.onHold
+                sequential : "SEQ"+totalRow.length,
+                quentity : Data.quentity,
+                items : Data.items,
+                orderStatus : "Pending",
+                orderDate : Data.orderDate,
+                isDraftPurchaseOrder : true,
+                supplierName : Data.supplierName,
+                onHold : true
             });
 
             newOrder.save()
-                .then(() => {
-                    resolve({ "status": "200", "message": "Order is created" });
-                })
-                .catch((err) => {
-                    reject({ "status": "500", "message": "Err " + err });
-                });
+            .then(() => {
+                resolve({"status":"201","message":"Order is created"});
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
         })
     }
 
+
     /**
-     * 
-     * getting all orders
+     * Delete order.
+     * First find a order by id, if find a matching order delete.
+     * If can not find order return related message to user. 
+     */
+    this.deleteOrder = (id) => {
+    
+        return new Promise((resolve , reject) => {
+
+            OrderShema.find({_id : id}).exec()
+            .then((data) => {
+                if(data.length === 1){
+                    console.log("IF");
+                    OrderShema.deleteOne({_id : id})
+                    .then(() => {
+                        resolve({"status":"200","message":"Order is deleted"});
+                    })
+                    .catch((err) => {
+                        reject({"status":"500","message":"Err "+err})
+                    });
+                }
+                else{
+                    resolve({"status":"205","message":"Can not find order"})
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
+        })
+    }
+
+
+    /**
+     * Find all orders.
+     * First it check orders are existing, then return order set.
      */
     this.getAllOrders = () => {
+
         return new Promise((resolve, reject) => {
+
             OrderShema.find().exec()
-                .then((data) => {
-                    if (data.length !== 0) {
-                        resolve({ "status": "200", "message": data });
-                    }
-                    else {
-                        reject({ "status": "204", "message": "No Content" });
-                    }
-                })
-                .catch((err) => {
-                    reject({ "status": "500", "message": "Err " + err });
-                });
+            .then((data) => {
+                
+                if(data.length !== 0 ){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    resolve({"status":"205","message":"Can not find order"});
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err"+err});
+            })
+        })
+    }
+
+
+    /**
+     * Update a particular order finding by id
+     */
+    this.updateOrder = (id , Data) => {
+        return new Promise((resolve,reject) => {
+
+            OrderShema.find({_id : id}).exec()
+            .then((data) => {
+                if(data.length === 1) {
+
+                   OrderShema.update({ _id: id }, Data)
+                   .then(() => {
+                        resolve({"status":"200" , "message":"Order is updated"});
+                   })
+                   .catch((err) => {
+                        reject({"status":"500","message":"Err "+err});
+                   }); 
+                }   
+                else{
+                    resolve({"status":"205","message":"Can not find order"});
+                }
+            })
+            .catch((err) => {
+                reject({"status":"404","message":"Err "+err});
+            })
         })
     }
 
 
     /**
      * 
-     * getting a order by its id
+     * @param {*} supplierName 
      */
-    this.getOrderByID = (id) => {
-        return new Promise((resolve, reject) => {
-            OrderShema.find({ _id: id }).exec()
-                .then((data) => {
-                    if (data.length === 1) {
+    this. getOrderBySupplier = (supplierName) => {
 
-                        resolve({ "status": "200", "message": data });
-                    } else {
-
-                        resolve({ status: 200, message: "order doesn't exist" });
-                    }
-                })
-                .catch((err) => {
-                    reject({ status: 500, message: err })
-                })
+        return new Promise((resolve,reject) => {
+            OrderShema.find({supplierName : supplierName})
+            .then((data) => {
+                
+                if(data.length === 1){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    resolve({"status":"205","message":"Can not find order"})
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
         })
     }
-
 
 }
 

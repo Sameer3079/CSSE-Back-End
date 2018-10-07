@@ -6,9 +6,9 @@ const Passport      = require("passport");
 
 const app = Express();
 
+app.use(Cors());
 app.use(BodyParser.urlencoded({extended:false}));
 app.use(BodyParser.json());
-app.use(Cors());
 
 app.use('/' , Routes);
 
