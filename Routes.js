@@ -4,6 +4,7 @@ const PaymentRoute      = require('./Payment/Payment.Route');
 const UserRoute         = require('./Users/User.Route');
 const ItemRoute         = require("./Item/Item.Route");
 const OrderRoute        = require('./Order/Order.Route');
+const SupplierRoute     = require('./Supplier/Supplier.Route');
 
 const employeeRoute = require('./Employee/Employee.Route')
 const supplierRoute = require('./Supplier/Supplier.Route')
@@ -14,6 +15,7 @@ Routes.use('/payments' , PaymentRoute);
 Routes.use('/users' , UserRoute);
 Routes.use('/items' , ItemRoute);
 Routes.use('/orders' , OrderRoute);
+Routes.use('/suppliers', SupplierRoute);
 
 Routes.use('/site' , siteRoute);
 

@@ -1,45 +1,65 @@
-let express = require('express')
-let router = express.Router()
-let supplierController = require('./Supplier.Controller')
+const Express           = require("express");
+const Router             = Express.Router();
+const SupplierController   = require("./Supplier.Controller");
 
-router.get('/', (req, res) => {
-    supplierController.getAll().then(data => {
-        res.status(data.status).send(data.data)
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
+/**
+     * POST 
+     * If success, Return status code as 201
+     * Created By Sahiru Galappaththi
+     */
+
+    Router.post('/' , (req, res) => {
+
+        SupplierController.addSupplier(req.body)
+        .then((data) => {
+            res.status(data.status).send({"message":data.message});
+        })
+        .catch((err) => {
+            res.status(err.status).send({"message":err.message});
+        });
+    });
+
+
+
+    Router.get('/' , (req, res)  => {
+        SupplierController.getAllSuppliers()
+        .then((data) => {
+            res.status(data.status).send(data.message);
+        })
+        .catch((err) => {
+            res.status(err.status).send({"message":err.message});
+        });
     })
-})
 
-router.get('/:id', (req, res) => {
-    supplierController.getOne(req.params.id).then(data => {
-        res.status(data.status).send(data.data)
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
+
+
+    Router.get('/:nic' , (req, res)  => {
+        SupplierController.getSupplierBynic(req.params.nic)
+        .then((data) => {
+            res.status(data.status).send(data.message);
+        })
+        .catch((err) => {
+            res.status(err.status).send({"message":err.message});
+        });
     })
-})
 
-router.post('/', (req, res) => {
-    supplierController.addSupplier(req).then(data => {
-        res.status(data.status).send({ message: data.message })
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
-    })
-})
+ 
 
-router.put('/', (req, res) => {
-    supplierController.updateSupplier(req).then(data => {
-        res.status(data.status).send({ message: data.message, updatedSupplier: data.updatedSupplier })
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
-    })
-})
 
-router.delete('/:id', (req, res) => {
-    supplierController.removeSupplier(req.params.id).then(data => {
-        res.status(data.status).send({ message: data.message })
-    }).catch(error => {
-        res.status(error.status).send({ message: error.message })
-    })
-})
 
-module.exports = router
+
+    // Router.get('/getItems' , (req, res)  => {
+    //     SupplierController.getAvailableItems()
+    //     .then((data) => {
+    //         res.status(data.status).send(data.message);
+    //     })
+    //     .catch((err) => {
+    //         res.status(err.status).send({"message":err.message});
+    //     });
+    // })
+
+
+
+
+
+    module.exports = Router;

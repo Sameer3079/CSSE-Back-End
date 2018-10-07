@@ -1,18 +1,42 @@
-let mongoose = require('mongoose')
+let mongoose = require('mongoose');
 let schema = mongoose.Schema
 
-let supplierSchema = new schema({
-    supplierId: { required: true, type: String },
-    name: { required: true, type: String },
-    bankAccount: { required: true, type: String },
-    address: { required: true, type: String },
-    email: { required: true, type: String },
-    contactNo: { required: true, type: String },
-    items: [{ required: false, type: String }],
-    available: { required: true, type: Boolean },
-    blacklisted: { required: true, type: Boolean }
-})
+const Supplier = new schema({
+    supplierName : {
+        type : String,
+        required : true
+    },
+    bankAccount : {
+        type : String,
+        required : true
+    },
+    nic : {
+        type : String,
+        required : true
 
-mongoose.model('Supplier', supplierSchema, 'suppliers')
+    },
+    address : {
+        type : String,
+        required : true
+    },
+    email : {
+        type : String,
+        required : true
+    },
+    phone : {
+        type : String,
+        required : true
+    },
+    items : {
+        type : String,
+        required : true
+    },
+    blackList : {
+        type : Boolean,
+        required : true
+    }
+});
+
+mongoose.model('Supplier', Supplier)
 
 module.exports = mongoose
