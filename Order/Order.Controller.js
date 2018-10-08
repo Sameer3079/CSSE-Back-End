@@ -1,162 +1,129 @@
-const Mongoose = require("../Model/Order");
-const OrderShema = Mongoose.model("Order");
+const Mongoose = require("../Model/Order")
+const orderModel = Mongoose.model("Order")
 
 var OrderController = function () {
 
-    /**
-     * 
-     * Making a new order
-     */
-
-    /**
-     * Create new order. 
-     */
-    this.addOrder = (Data) => {
-        
-        return new Promise((resolve,reject) => {
-            
-            /**
-             * get count of all orders
-             */
-            var totalRow = OrderShema.count((err, C) => {
-                console.log(C+1);
-            });
-
-            console.log(totalRow.length);
-            
-            var newOrder = new OrderShema({
-                sequential : "SEQ"+totalRow.length,
-                quentity : Data.quentity,
-                items : Data.items,
-                orderStatus : "Pending",
-                orderDate : Data.orderDate,
-                isDraftPurchaseOrder : true,
-                supplierName : Data.supplierName,
-                onHold : true
-            });
-
-            newOrder.save()
-            .then(() => {
-                resolve({"status":"201","message":"Order is created"});
+    this.getAll = () => {
+        return new Promise((resolve, reject) => {
+            orderModel.find().then(data => {
+                resolve({ status: 200, data: data })
+            }).catch(error => {
+                reject({ status: 500, message: error })
             })
-            .catch((err) => {
-                reject({"status":"500","message":"Err "+err});
-            });
         })
     }
 
+    this.getOne = orderId => {
+        return new Promise((resolve, reject) => {
+            orderModel.findOne({ orderId: orderId }).then(data => {
+                if (data !== null) {
+                    resolve({ status: 200, data: data })
+                } else {
+                    reject({ status: 404, message: 'Order not found' })
+                }
+            }).catch(error => {
+                reject({ status: 500, message: error })
+            })
+        })
+    }
 
-    /**
-     * Delete order.
-     * First find a order by id, if find a matching order delete.
-     * If can not find order return related message to user. 
-     */
-    this.deleteOrder = (id) => {
-    
-        return new Promise((resolve , reject) => {
-
-            OrderShema.find({_id : id}).exec()
-            .then((data) => {
-                if(data.length === 1){
-                    console.log("IF");
-                    OrderShema.deleteOne({_id : id})
-                    .then(() => {
-                        resolve({"status":"200","message":"Order is deleted"});
+    this.addOrder = (req) => {
+        return new Promise((resolve, reject) => {
+            orderModel.findOne({ orderId: req.body.orderId }).then(data => {
+                if (data === null) {
+                    let order = new orderModel({
+                        orderId: req.body.orderId,
+                        itemName: req.body.itemName,
+                        requestId: req.body.requestId,
+                        quantity: req.body.quantity,
+                        unitPrice: req.body.unitPrice,
+                        orderDate: req.body.orderDate,
+                        paid: false
                     })
-                    .catch((err) => {
-                        reject({"status":"500","message":"Err "+err})
-                    });
+                    order.save().then(data => {
+                        resolve({ status: 201, message: 'Order has been created' })
+                    }).catch(error => {
+                        reject({ status: 400, message: error })
+                    })
+                } else {
+                    reject({ status: 400, message: 'Order ID is already in use' })
                 }
-                else{
-                    resolve({"status":"205","message":"Can not find order"})
-                }
+            }).catch(error => {
+                reject({ status: 500, message: error })
             })
-            .catch((err) => {
-                reject({"status":"500","message":"Err "+err});
-            });
         })
     }
 
-
-    /**
-     * Find all orders.
-     * First it check orders are existing, then return order set.
-     */
-    this.getAllOrders = () => {
+    this.deleteOrder = (id) => {
 
         return new Promise((resolve, reject) => {
 
-            OrderShema.find().exec()
-            .then((data) => {
-                
-                if(data.length !== 0 ){
-                    resolve({"status":"200","message":data});
+            orderModel.find({ _id: id }).exec()
+                .then((data) => {
+                    if (data.length === 1) {
+                        console.log("IF")
+                        orderModel.deleteOne({ _id: id })
+                            .then(() => {
+                                resolve({ "status": "200", "message": "Order is deleted" })
+                            })
+                            .catch((err) => {
+                                reject({ "status": "500", "message": "Err " + err })
+                            })
+                    }
+                    else {
+                        resolve({ "status": "205", "message": "Can not find order" })
+                    }
+                })
+                .catch((err) => {
+                    reject({ "status": "500", "message": "Err " + err })
+                })
+        })
+    }
+
+    this.updateOrder = (orderId, Data) => {
+        return new Promise((resolve, reject) => {
+            orderModel.findOne({ orderId: orderId }).then(data => {
+                if (data !== null) {
+                    data.itemName = Data.itemName
+                    data.requestId = Data.requestId
+                    data.quantity = Data.quantity
+                    data.unitPrice = Data.unitPrice
+                    data.orderDate = Data.orderDate
+                    data.paid = Data.paid
+                    data.save().then(data => {
+                        resolve({ status: 200, message: 'Order has been updated' })
+                    }).catch(error => {
+                        reject({ status: 500, message: 'Error Occured when updating' })
+                    })
                 }
-                else{
-                    resolve({"status":"205","message":"Can not find order"});
+                else {
+                    resolve({ status: 205, message: "Can not find order" })
                 }
-            })
-            .catch((err) => {
-                reject({"status":"500","message":"Err"+err});
+            }).catch(error => {
+                reject({ status: 404, message: error })
             })
         })
     }
 
+    this.getOrderBySupplier = (supplierName) => {
 
-    /**
-     * Update a particular order finding by id
-     */
-    this.updateOrder = (id , Data) => {
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
+            orderModel.find({ supplierName: supplierName })
+                .then((data) => {
 
-            OrderShema.find({_id : id}).exec()
-            .then((data) => {
-                if(data.length === 1) {
-
-                   OrderShema.update({ _id: id }, Data)
-                   .then(() => {
-                        resolve({"status":"200" , "message":"Order is updated"});
-                   })
-                   .catch((err) => {
-                        reject({"status":"500","message":"Err "+err});
-                   }); 
-                }   
-                else{
-                    resolve({"status":"205","message":"Can not find order"});
-                }
-            })
-            .catch((err) => {
-                reject({"status":"404","message":"Err "+err});
-            })
-        })
-    }
-
-
-    /**
-     * 
-     * @param {*} supplierName 
-     */
-    this. getOrderBySupplier = (supplierName) => {
-
-        return new Promise((resolve,reject) => {
-            OrderShema.find({supplierName : supplierName})
-            .then((data) => {
-                
-                if(data.length === 1){
-                    resolve({"status":"200","message":data});
-                }
-                else{
-                    resolve({"status":"205","message":"Can not find order"})
-                }
-            })
-            .catch((err) => {
-                reject({"status":"500","message":"Err "+err});
-            });
+                    if (data.length === 1) {
+                        resolve({ "status": "200", "message": data })
+                    }
+                    else {
+                        resolve({ "status": "205", "message": "Can not find order" })
+                    }
+                })
+                .catch((err) => {
+                    reject({ "status": "500", "message": "Err " + err })
+                })
         })
     }
 
 }
 
-
-
-module.exports = new OrderController();
+module.exports = new OrderController()
