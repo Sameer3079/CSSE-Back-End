@@ -37,7 +37,8 @@ var OrderController = function () {
                         requestId: req.body.requestId,
                         quantity: req.body.quantity,
                         unitPrice: req.body.unitPrice,
-                        orderDate: req.body.orderDate
+                        orderDate: req.body.orderDate,
+                        paid: false
                     })
                     order.save().then(data => {
                         resolve({ status: 201, message: 'Order has been created' })
@@ -79,34 +80,30 @@ var OrderController = function () {
         })
     }
 
-
-
-    this.updateOrder = (id, Data) => {
+    this.updateOrder = (orderId, Data) => {
         return new Promise((resolve, reject) => {
-
-            orderModel.find({ _id: id }).exec()
-                .then((data) => {
-                    if (data.length === 1) {
-
-                        orderModel.update({ _id: id }, Data)
-                            .then(() => {
-                                resolve({ "status": "200", "message": "Order is updated" })
-                            })
-                            .catch((err) => {
-                                reject({ "status": "500", "message": "Err " + err })
-                            })
-                    }
-                    else {
-                        resolve({ "status": "205", "message": "Can not find order" })
-                    }
-                })
-                .catch((err) => {
-                    reject({ "status": "404", "message": "Err " + err })
-                })
+            orderModel.findOne({ orderId: orderId }).then(data => {
+                if (data !== null) {
+                    data.itemName = Data.itemName
+                    data.requestId = Data.requestId
+                    data.quantity = Data.quantity
+                    data.unitPrice = Data.unitPrice
+                    data.orderDate = Data.orderDate
+                    data.paid = Data.paid
+                    data.save().then(data => {
+                        resolve({ status: 200, message: 'Order has been updated' })
+                    }).catch(error => {
+                        reject({ status: 500, message: 'Error Occured when updating' })
+                    })
+                }
+                else {
+                    resolve({ status: 205, message: "Can not find order" })
+                }
+            }).catch(error => {
+                reject({ status: 404, message: error })
+            })
         })
     }
-
-
 
     this.getOrderBySupplier = (supplierName) => {
 

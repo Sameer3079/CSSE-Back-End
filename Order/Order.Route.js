@@ -34,11 +34,11 @@ Router.delete('/:id', (req, res) => {
     })
 })
 
-Router.put('/:id', (req, res) => {
-    OrderController.updateOrder(req.params.id, req.body).then((data) => {
-        res.status(data.status).send(data.message)
-    }).catch((err) => {
-        res.status(err.status).send(err.message)
+Router.put('/:orderId', (req, res) => {
+    OrderController.updateOrder(req.params.orderId, req.body).then(data => {
+        res.status(data.status).send({ message: data.message })
+    }).catch(error => {
+        res.status(error.status).send({ message: error.message })
     })
 })
 

@@ -7,7 +7,8 @@ const OrderShema = new Schema({
     requestId: { type: String, required: true },
     quantity: { type: Number, require: true },
     unitPrice: { type: Number, required: true },
-    orderDate: { type: Date, required: true }
+    orderDate: { type: Date, required: true },
+    paid: { type: Boolean, required: true }
 })
 
 Mongoose.model('Order', OrderShema)
