@@ -9,7 +9,8 @@ const SupplierRoute     = require('./Supplier/Supplier.Route');
 const employeeRoute = require('./Employee/Employee.Route')
 const supplierRoute = require('./Supplier/Supplier.Route')
 const businessPolicyRoute = require('./BusinessPolicy/BusinessPolicy.Route')
-const siteRoute = require('./Site/Site.Route')
+const siteRoute = require('./Site/Site.Route');
+const RequestRoute      = require('./Request/Request.Route');
 
 Routes.use('/payments' , PaymentRoute);
 Routes.use('/users' , UserRoute);
@@ -21,6 +22,7 @@ Routes.use('/site' , siteRoute);
 
 Routes.use('/employees', employeeRoute)
 Routes.use('/suppliers', supplierRoute)
-Routes.use('/business-policies', businessPolicyRoute)
+Routes.use('/business-policies', businessPolicyRoute);
+Routes.use('/request' , RequestRoute);
 
 module.exports = Routes;
