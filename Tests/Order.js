@@ -35,8 +35,8 @@ describe('Order', () => {
     it('GET-ALL\tNumber of orders should be zero', done => {
         chai.request(server).get('/orders')
             .end((error, res) => {
-                res.should.have.status(200)
-                res.body.should.have.be.a('array')
+                res.should.have.status(204)
+               // res.body.should.have.be.a('array')
                 res.body.length.should.be.eql(0)
                 done()
             })
@@ -45,9 +45,9 @@ describe('Order', () => {
     it('POST\tAdding a new order', done => {
         chai.request(server).post('/orders')
             .set('content-type', 'application/json')
-            .send(supplier)
+            .send(order)
             .end((error, res) => {
-                res.should.have.status(201)
+                res.should.have.status(200)
                 res.body.should.have.be.a('object')
                 done()
             })
@@ -62,4 +62,5 @@ describe('Order', () => {
                 done()
             })
     })
+
 })

@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 
 describe('Payment', () => {
     let server;
-    let order = {
+    let payment = {
         orderId: 'a32e2332',
         supplierName: 'CRT',
         date: '2017/08/10',
@@ -31,8 +31,8 @@ describe('Payment', () => {
     it('GET-ALL\tNumber of payments should be zero', done => {
         chai.request(server).get('/payments')
             .end((error, res) => {
-                res.should.have.status(200)
-                res.body.should.have.be.a('array')
+                res.should.have.status(204)
+              //  res.body.should.have.be.a('array')
                 res.body.length.should.be.eql(0)
                 done()
             })
@@ -41,7 +41,7 @@ describe('Payment', () => {
     it('POST\tAdding a new payment', done => {
         chai.request(server).post('/payments')
             .set('content-type', 'application/json')
-            .send(supplier)
+            .send(payment)
             .end((error, res) => {
                 res.should.have.status(201)
                 res.body.should.have.be.a('object')

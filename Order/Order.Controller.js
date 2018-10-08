@@ -12,12 +12,13 @@ var OrderController = function () {
 
         return new Promise((resolve, reject) => {
             var newOrder = new OrderShema({
-                sequential: Data.sequential,
-                items: Data.items,
-                orderStatus: Data.orderStatus,
+                orderID: Data.orderID,
+                itemName: Data.itemName,
+                requestId: Data.requestId,
+                quantity: Data.quantity,
+                unitPrice: Data.unitPrice,
                 orderDate: Data.orderDate,
-                isDraftPurchaseOrder: Data.isDraftPurchaseOrder,
-                onHold: Data.onHold
+                paid:false
             });
 
             newOrder.save()
@@ -54,11 +55,11 @@ var OrderController = function () {
 
     /**
      * 
-     * getting a order by its id
-     */
+     * getting a order by orderID
+     
     this.getOrderByID = (id) => {
         return new Promise((resolve, reject) => {
-            OrderShema.find({ _id: id }).exec()
+            OrderShema.find({ orderID: id }).exec()
                 .then((data) => {
                     if (data.length === 1) {
 
@@ -72,8 +73,45 @@ var OrderController = function () {
                     reject({ status: 500, message: err })
                 })
         })
-    }
+    }*/
+/**
+     * 
+     * getting pending payments
+     */
 
+    this.getPendingOrders = () => {
+        return new Promise((resolve,reject) => {
+            OrderShema.find({paid:{$eq:false}}).exec()
+            .then((data) => {
+                if(data.length !== 0){
+                    resolve({"status":"200","message":data});
+                }
+                else{
+                    reject({"status":"204","message":"No Content"});
+                }
+            })
+            .catch((err) => {
+                reject({"status":"500","message":"Err "+err});
+            });
+        })
+    }  
+
+        /**
+     * 
+     * making the payment by updating the paid true
+     */
+
+    this.updateOrder = (id) => {
+        return new Promise((resolve, reject) => {
+            OrderShema.update({orderID:id}, {$set: {paid: true}})
+            .then(() => {
+                resolve({status:200 , message:"Payment made"});
+            })
+            .catch((err) => {
+                reject({status:500 , message:err});
+            });
+        })
+    }
 
 }
 

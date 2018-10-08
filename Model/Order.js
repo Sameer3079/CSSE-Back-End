@@ -4,43 +4,33 @@ const Schema = Mongoose.Schema;
 
 const OrderShema = new Schema({
 
-    sequential: {
+    orderID: {
         type: String,
         required: true
     },
-    items:[ {
-        catagory: {
-            type: String,
-            required: true
-        },
-        itemName: {
-            type: String,
-            required: true
-        },
-        quantity: {
-            type: String,
-            required: true
-        },
-        amount: {
-            type: String,
-            required: true
-        }
-    }],
-    orderStatus: {
+    itemName: {
         type: String,
         required: true
     },
-    orderDate: {
-        type: Date,
+    requestId: {
+        type: String,
         require: true
     },
-    isDraftPurchaseOrder: {
-        type: Boolean,
+    quantity: {
+        type: Number,
         required: true
     },
-    onHold: {
-        type: Boolean,
+    unitPrice: {
+        type: Number,
         required: true
+    },
+    orderDate:{
+        type:String,
+        required:true
+    },
+    paid:{
+        type:Boolean,
+        required:false
     }
 });
 
